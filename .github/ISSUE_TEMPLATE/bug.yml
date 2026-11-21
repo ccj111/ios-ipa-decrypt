@@ -1,0 +1,63 @@
+name: Bug / 事实不符
+description: 某条判据在我这儿不成立，或某一步走不通
+title: "[bug] "
+labels: ["needs-report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **贴之前先把这些删掉**：`accountId`、`sessionId`、`dsid`、完整 selector、`testerEmail`、
+        `install.json` 原文、会话 JSON、model `*.bin`。这类内容等同登录态。
+
+        只需要：错误字面 + 在哪一步 + 版本信息 + cryptid 表。见 `docs/07-troubleshooting.md` §7.5。
+
+  - type: dropdown
+    id: step
+    attributes:
+      label: 卡在哪一步
+      options:
+        - "① 会话（Cache.db）"
+        - "② catalog"
+        - "③ install 元数据"
+        - "④ 下载 / 形态判定"
+        - "⑤ SINF 回插"
+        - "⑥ 解密"
+        - "⑦ 校验"
+        - "其它 / 纯文档问题"
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: 环境
+      description: "macOS 版本 / 芯片 / 是否 arm64"
+      placeholder: "15.6.1 / Apple M3 / arm64"
+    validations:
+      required: true
+
+  - type: input
+    id: versions
+    attributes:
+      label: 客户端与上游版本
+      placeholder: "TestFlight 4.4.1 / apple-auth v0.1.3 / unfairplay <commit>"
+
+  - type: textarea
+    id: symptom
+    attributes:
+      label: 错误字面（原样）与判据
+      description: 粘字面报错即可；如果已经自己核过 cryptid，把 `macho_total / encrypted_total` 一起贴上
+      placeholder: |
+        ```
+        <粘贴原样报错>
+        ```
+        cryptid: macho_total=NN encrypted_total=NN
+    validations:
+      required: true
+
+  - type: textarea
+    id: expectation
+    attributes:
+      label: 你认为哪条判据不成立
+      description: 指到具体文档小节比“跑不通”有用得多
+      placeholder: "docs/05-decrypt.md §5.3 ① 说 setup 与 decrypt 要分开，但……"

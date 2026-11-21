@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1440" viewBox="0 0 1240 1440">
+<rect width="1240" height="1440" fill="#fbfbfd"/>
+<defs><marker id="a" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#5b6472"/></marker><marker id="ag" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#0f766e"/></marker></defs>
+<text x="620.0" y="44" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="25" font-weight="700" fill="#111827">TestFlight 取包 + 主机侧解密：当前实现</text>
+<text x="620.0" y="70" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="13.5" fill="#6b7280">token（会话）从 TestFlight 客户端缓存里直取，不走 GSA 认证；解密靠账号级 FairPlay credential，与 token 无关</text>
+<rect x="40" y="92" width="860" height="116" rx="14" fill="#eef6ff"/>
+<text x="58" y="118" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#374151">① 一次性准备（之后都不再需要人工）</text>
+<rect x="60" y="128" width="195" height="62" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="158" y="149.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">Mac TestFlight</text>
+<text x="158" y="169.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">已登录，能列出 beta</text>
+<rect x="275" y="128" width="195" height="62" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="372" y="149.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">打开一次客户端</text>
+<text x="372" y="169.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">→ 缓存自动刷新</text>
+<rect x="490" y="128" width="195" height="62" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="588" y="149.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">udid20</text>
+<text x="588" y="169.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">任意 40 位十六进制</text>
+<rect x="705" y="128" width="195" height="62" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="802" y="149.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">anisette provider</text>
+<text x="802" y="169.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">→ X-Apple-AMD-M</text>
+<rect x="40" y="226" width="860" height="172" rx="14" fill="#ecfdf5"/>
+<text x="58" y="252" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#374151">② 凭据提取：只读客户端的 URL 缓存</text>
+<text x="58" y="258" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.8" fill="#047857">~/Library/Containers/com.apple.TestFlight/Data/Library/Caches/com.apple.TestFlight/Cache.db</text>
+<rect x="60" y="278" width="195" height="84" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="158" y="300.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">/v1/session/authenticate</text>
+<text x="158" y="320.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">响应体 → sessionId</text>
+<text x="158" y="340.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">+ accountId</text>
+<rect x="275" y="278" width="195" height="84" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="372" y="300.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">MZInit 响应</text>
+<text x="372" y="320.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">→ DSPersonID</text>
+<text x="372" y="340.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">= dsid（签名要用）</text>
+<rect x="490" y="278" width="195" height="84" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="588" y="300.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">metrics 响应</text>
+<text x="588" y="320.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">→ storefront</text>
+<text x="588" y="340.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563"><storefront></text>
+<rect x="705" y="278" width="195" height="84" rx="9" fill="#f0fdf4" stroke="#34d399" stroke-width="1.4"/>
+<text x="802" y="310.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">拼装 tf-session.json</text>
+<text x="802" y="330.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">含 udid / AMD-M</text>
+<rect x="40" y="414" width="860" height="148" rx="14" fill="#fff7ed"/>
+<text x="58" y="440" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#374151">③ TF 接口：签名头 X-Session-Id + X-Session-Digest(session,id,dsid)</text>
+<rect x="60" y="448" width="290" height="90" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="205" y="483.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">GET /v1/catalog</text>
+<text x="205" y="503.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">列出账号可见的 beta（appId / name）</text>
+<rect x="370" y="448" width="330" height="90" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="535" y="473.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">GET /v1/install</text>
+<text x="535" y="493.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">→ url：CDN 直链（自带 accessKey）</text>
+<text x="535" y="513.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">→ sinf：SINF 由服务端下发</text>
+<rect x="720" y="448" width="180" height="90" rx="9" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="810" y="473.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">顺带返回</text>
+<text x="810" y="493.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">packageSize</text>
+<text x="810" y="513.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">expirationDate</text>
+<rect x="40" y="578" width="860" height="196" rx="14" fill="#fef2f2"/>
+<text x="58" y="604" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#374151">④ 下载 + 形态判定</text>
+<rect x="60" y="612" width="230" height="74" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="175" y="639.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">curl -L 直链</text>
+<text x="175" y="659.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">（别再拼 ?token=）</text>
+<path d="M300,649 L330,649" stroke="#5b6472" stroke-width="1.8" fill="none" marker-end="url(#a)"/>
+<path d="M400,612 L470,649 L400,686 L330,649 Z" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+<text x="400" y="654" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#9a3412">是 zip？</text>
+<rect x="500" y="600" width="175" height="44" rx="9" fill="#ffffff" stroke="#34d399" stroke-width="1.4"/>
+<text x="588" y="622.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">是 → 加密 IPA</text>
+<rect x="500" y="676" width="380" height="66" rx="9" fill="#fff1f2" stroke="#fb7185" stroke-width="1.4"/>
+<text x="690" y="689.8" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.0" font-weight="700" fill="#111827">否 → pre-thinned transport 态</text>
+<text x="690" y="709.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#4b5563">兜底：读本机 Wrapper/Runner.app</text>
+<text x="690" y="728.2" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#4b5563">ditto → Payload/ → zip（SINF 自带）</text>
+<path d="M470,649 L500,622" stroke="#0f766e" stroke-width="1.8" fill="none" marker-end="url(#ag)"/>
+<path d="M400,686 L400,709 L500,709" stroke="#5b6472" stroke-width="1.8" fill="none" marker-end="url(#a)"/>
+<rect x="40" y="800" width="860" height="118" rx="14" fill="#f5f3ff"/>
+<text x="58" y="826" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#374151">⑤ 归一化：TF 服务端包内没有 SC_Info/*.sinf</text>
+<rect x="60" y="832" width="470" height="70" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="295" y="857.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">从 install.json 的 sinf 字段取 SINF（1056 B）</text>
+<text x="295" y="877.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">写回 Payload/<X>.app/SC_Info/<X>.sinf 再 zip</text>
+<rect x="560" y="832" width="320" height="70" rx="9" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.4"/>
+<text x="720" y="857.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">本机 Wrapper 自带 Runner.sinf</text>
+<text x="720" y="877.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">→ 跳过这一步</text>
+<rect x="40" y="944" width="860" height="166" rx="14" fill="#eff6ff"/>
+<text x="58" y="970" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#374151">⑥ 解密 + 校验：与渠道无关，只看 selector</text>
+<rect x="60" y="978" width="260" height="100" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="190" y="999.2" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.0" font-weight="700" fill="#111827">selector 比对</text>
+<text x="190" y="1018.4" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#4b5563">sha256(user‖key)</text>
+<text x="190" y="1037.6" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#4b5563">user=0 key=0</text>
+<text x="190" y="1056.8" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#4b5563">→ <selector>（命中 model）</text>
+<rect x="350" y="978" width="230" height="100" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="465" y="1008.8" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.0" font-weight="700" fill="#111827">unfairplay decrypt</text>
+<text x="465" y="1028.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#4b5563">model: ~/.unfairplay-model</text>
+<text x="465" y="1047.2" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#4b5563">页密钥取自 *.supp</text>
+<rect x="620" y="978" width="260" height="100" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+<text x="750" y="999.2" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.0" font-weight="700" fill="#111827">校验</text>
+<text x="750" y="1018.4" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#4b5563">cryptid X=[0]</text>
+<text x="750" y="1037.6" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#4b5563">encrypted []（明文）</text>
+<text x="750" y="1056.8" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#4b5563">VERDICT: DECRYPTED</text>
+<rect x="250" y="1168" width="480" height="72" rx="9" fill="#f0fdf4" stroke="#34d399" stroke-width="1.4"/>
+<text x="490" y="1184.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#111827">明文 IPA</text>
+<text x="490" y="1204.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">Sample A：260,225,568 → 173,156,713 B</text>
+<text x="490" y="1224.0" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.0" font-weight="400" fill="#4b5563">→ 重签（清 cryptid 会破坏签名）/ 静态分析</text>
+<path d="M157,190 L157,278" stroke="#5b6472" stroke-width="1.8" fill="none" marker-end="url(#a)"/>
+<path d="M802,190 L802,278" stroke="#5b6472" stroke-width="1.8" fill="none" marker-end="url(#a)"/>
+<path d="M802,362 L802,448" stroke="#5b6472" stroke-width="1.8" fill="none" marker-end="url(#a)"/>
+<path d="M205,538 L205,612" stroke="#5b6472" stroke-width="1.8" fill="none" marker-end="url(#a)"/>
+<path d="M587,644 L490,644 L490,794 L295,794" stroke="#0f766e" stroke-width="1.8" fill="none"/>
+<path d="M690,742 L690,794 L295,794 L295,832" stroke="#5b6472" stroke-width="1.8" fill="none" marker-end="url(#a)"/>
+<path d="M295,902 L295,978" stroke="#5b6472" stroke-width="1.8" fill="none" marker-end="url(#a)"/>
+<path d="M320,1028 L350,1028" stroke="#5b6472" stroke-width="1.8" fill="none" marker-end="url(#a)"/>
+<path d="M580,1028 L620,1028" stroke="#5b6472" stroke-width="1.8" fill="none" marker-end="url(#a)"/>
+<path d="M750,1078 L750,1128 L490,1128 L490,1168" stroke="#5b6472" stroke-width="1.8" fill="none"/>
+<rect x="940" y="414" width="260" height="700" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+<text x="958" y="446" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="700" fill="#111827">三条边界</text>
+<text x="958" y="467" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10" font-weight="400" fill="#000"></text>
+<text x="958" y="482" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#b91c1c">1. token ≠ credential</text>
+<text x="958" y="503" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">token 只给下载权：</text>
+<text x="958" y="524" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">catalog / install / CDN。</text>
+<text x="958" y="545" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">解密权是账号级 FairPlay</text>
+<text x="958" y="566" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">credential（selector 绑），</text>
+<text x="958" y="587" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">与 token 无关。</text>
+<text x="958" y="608" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10" font-weight="400" fill="#000"></text>
+<text x="958" y="623" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#b91c1c">2. token 会过期</text>
+<text x="958" y="644" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">表现：/v1/catalog 返 401。</text>
+<text x="958" y="665" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">刷新：打开一次客户端，</text>
+<text x="958" y="686" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">重跑第 ② 步，零 2FA。</text>
+<text x="958" y="707" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10" font-weight="400" fill="#000"></text>
+<text x="958" y="722" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#b91c1c">3. 本机 Wrapper 是退路</text>
+<text x="958" y="743" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">只覆盖 Mac 支持的 build；</text>
+<text x="958" y="764" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">直链给出 packing 态时用它。</text>
+<text x="958" y="785" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10" font-weight="400" fill="#000"></text>
+<text x="958" y="800" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#111827">因此不再需要</text>
+<text x="958" y="821" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">• GSA SRP（503）</text>
+<text x="958" y="842" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.5" font-weight="400" fill="#374151">• MIDService provisioning（401）</text>
+<text x="958" y="857" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">• 2FA 验证码</text>
+<text x="958" y="878" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">• 根证书 / 系统代理</text>
+<text x="958" y="899" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">• root / sudo</text>
+<text x="958" y="920" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="10" font-weight="400" fill="#000"></text>
+<text x="958" y="935" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#111827">实测 selector 同一个</text>
+<text x="958" y="956" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="400" fill="#374151">Sample A · B · C</text>
+<text x="958" y="977" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.5" font-weight="400" fill="#0f766e"><selector></text>
+<text x="620.0" y="1424" text-anchor="middle" font-family="'PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="11.5" fill="#9ca3af">skill: ios-ipa-decrypt v2.2.0 · docs/flow.md 为同一张图的 Mermaid 版</text>
+</svg>

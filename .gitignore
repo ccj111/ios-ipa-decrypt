@@ -1,0 +1,26 @@
+# 运行产物与凭据——永远不入库
+*.ipa
+*.app/
+ipa-work/
+out/
+*.bin
+tf-session.json
+tf-store-context.json
+account-session.plist
+mac-store.plist
+install.json
+catalog.json
+credentials.txt
+*.log
+
+# 工具与大目录
+vendor/
+node_modules/
+
+# 系统垃圾
+.DS_Store
+__pycache__/
+*.pyc
+
+# 本地私有泄漏清单（精确比对用，不入库）
+.secrets-local.txt
